@@ -1,95 +1,82 @@
-# TECTONIC 2026 — "The Signal" · Production Report
+# TECTONIC 2026 — "The Signal" v2 · Production Report
 
 | File | Format | Notes |
 |---|---|---|
 | `TECTONIC_THE_SIGNAL_MASTER.wav` | 24-bit PCM, 44.1 kHz, stereo | Lossless master |
-| `TECTONIC_THE_SIGNAL_FINAL.mp3` | 320 kbps CBR | For the QR code / hosting |
+| `TECTONIC_THE_SIGNAL_FINAL.mp3` | 320 kbps CBR | Used by the landing page / QR code |
 | `TECTONIC_THE_SIGNAL_PREVIEW.mp3` | 128 kbps | For quick sharing (WhatsApp, e-mail) |
 
-**Length:** 1:13. **Loudness:** −14.0 LUFS integrated, true peak −1.1 dBTP (MP3) and −1.2 dBFS (WAV), loudness range 8.8 LU. **Mono fold-down:** −0.9 LU, so it holds up on single-driver JBL speakers.
+**Length:** 1:07.6. **Loudness:** −14.0 LUFS integrated, true peak −1.15 dBTP (MP3) / −1.2 dBTP (WAV). **Mono fold-down:** −1.2 LU.
+The MP3s are pre-compensated for the encoder delay, so they are sample-aligned with the page's caption timings (measured offset 0.0 ms).
 
----
+v2 replaces the v1 voice-over (British narrator, "Every great movement begins with a spark…") with the new
+ElevenLabs read **"Ben — Vibrant and High-Energy"** (44 s, playful script: *"Hey, you! Found the QR code? … Volume up.
+Warning. Your gift box will self-destruct in two minutes. Just kidding. … Let's make some noise!"*).
+v1 is in the git history (`produce.py`); v2 is `production/produce_v2.py`.
 
-## 1. Analysis of the supplied assets
+## 1. Assets
 
-| Asset | Duration | Tempo / key | Character | Verdict |
-|---|---|---|---|---|
-| ElevenLabs VO (British) | 46.4 s | — | Clean, digital-silence pauses, −19 LUFS, quite fast delivery | Foundation |
-| **Stereo Color — Inspiring Cinematic Trailer** | 2:28 | **84 BPM 4/4**, G minor / B♭ major | A real trailer architecture: pulsing intro → break-boom → full section → breakdown → **boom + 2 s silence → final drop** → ending | **Selected** |
-| The Mountain — Cinematic Epic | 1:50 | ~112 BPM, B♭ minor / D♭ | Beautiful, but dynamically flat (−23 to −18 dB). Three similar swells with almost no contrast | Not used |
-| Vaitsez — Futuristic Digital Music | 2:21 | ~96 BPM, B♭ major | Dense, constantly loud (−10 LUFS) four-on-the-floor electro. Hardly any space for a voice | Not used |
+| Asset | Use |
+|---|---|
+| ElevenLabs VO "Ben" (`ElevenLabs_2026-10-10T17_47_43_Ben…mp3`) | Foundation. −26.6 LUFS, every pause is digital silence (−90 dB), so pauses can be lengthened without seams. |
+| Stereo Color — *Inspiring Cinematic Trailer* (Pixabay) | Music bed, same track as v1. Re-downloaded from Pixabay; verified sample-exact against the v1 edit (0.0 ms offset), so v1's calibrated bar grid (84 BPM, bar = 2.857 s) is reused. Not committed (licence), lives in `production/work/` (git-ignored). |
+| v1 sound design | All synthesized in code and reused: signal pings, heartbeat, reverse swells, sub impact, data ticks, riser, frozen-chord pads. New: tape stop, countdown clock. |
 
-**Why Stereo Color?** It's the only track whose own dramaturgy matches the script. Above all, at 1:35 it has a *boom → near-silence → drop* sequence, which is exactly the "Welcome… to TECTONIC" moment.
+Word timings: faster-whisper (small.en, offline) for the words, refined against the waveform (phrase onsets ±5 ms).
 
-**Why no combination?** I seriously considered layering in the other two tracks.
-- *The Mountain* is in B♭ minor / D♭. Against the G minor of the chosen track, D♭ and G♭ clash with D and G.
-- *Futuristic Digital* is harmonically compatible (B♭ major), but at 96 vs 84 BPM it has a rhythm that's wholly its own. It would need about 14% of time-stretching, and it has no quiet passages to borrow from.
+## 2. Voice-over: untouched words, four pauses added
 
-Both would therefore have added noise rather than value. I created the futuristic layer myself (see §3), tuned to the chosen track's key and bar grid.
+No words were cut, changed or regenerated. Silence was inserted inside existing pauses only (2.6 s in total):
 
-**Structure of the chosen track** (determined with onset detection and harmonic analysis per bar): bar = 2.857 s. There's a 4-bar chord cycle **Gm – B♭ – F – E♭/C**. Impacts land on every bar line. The intro bars (0–7) are harmonically identical to the breakdown bars (25–32), so bar-accurate jumps are seamless.
+| Where | Added | Why |
+|---|---|---|
+| "Volume up." → "Warning." | 0.91 s | Lets the "Volume UP" drop actually play before the tape stop. |
+| "…two minutes." → (laugh) "Just kidding." | 0.32 s | Keeps the countdown on the quarter-note grid so the music lands back on "Just". |
+| "…something different." → "You've done the work." | 0.27 s | Puts the boom exactly on "ride". |
+| "…enjoy the ride." → "Let's make some noise!" | 1.15 s | The reveal silence (boom → near-silence → drop). |
 
-## 2. Voice-over: preserved, given more breathing room
+Processing as v1 (HPF 75 Hz, de-mud, presence +1 dB, air +0.5 dB, de-esser, 2.4:1 compression, peak control, short room),
++1.5 dB and a reverb throw on "Let's make some noise!", a throw on "Warning.".
 
-The script hasn't been touched. **No words were cut, changed or regenerated.** The only intervention is that a total of **8.1 s of silence** was inserted *inside existing pauses* (which were digital silence, so there are no edit seams). The original delivery was very fast. The extra space makes it cinematic, and it lets every key phrase land exactly on the music's bar grid.
-
-Processing: high-pass 75 Hz, −1.5 dB at 280 Hz (de-mud), +1.5 dB at 3.6 kHz (presence on small speakers), +1 dB air at 11 kHz, mild split-band de-esser, 2.2:1 compression, transparent peak control, a subtle short room (0.7 s, −21 dB). There's one cinematic reverb "throw" (2.6 s) on **"TECTONIC"** and on the final word **"next"**. On "TECTONIC" the voice is +2 dB.
-
-## 3. Timeline — the four acts
+## 3. Timeline
 
 | Time | Moment | What happens |
 |---|---|---|
-| **0:00** | **ACT I — The Awakening** | A "frozen" version of the soundtrack's own G-minor chord (spectral freeze) fades in from nothing, with a deep 49 Hz heartbeat on the bar grid (getting louder) and two soft **"signal" pings** (D6, dotted-eighth stereo echoes in a hall). That's the motif of the title *The Signal*. |
-| 0:04.5 | "Every great movement…" | The narrator starts calmly. The music sits heavily low-pass filtered (330→520 Hz): distant, mysterious. |
-| **0:07.1** | "…begins with a **spark**." | The soundtrack's first impact lands exactly on *spark*, as the ignition. |
-| 0:07–0:15 | "An idea. A belief…" | Minimal: the trailer intro sounds only as a muffled, deep pulse. Just before "People do" the music dips slightly. |
-| **0:15.7** | **ACT II — "People do."** | Subtle emphasis: a soft reverse swell leads into the word, a new harmonic cycle (Gm) starts exactly on *People*, and the filter opens up (560 Hz → 2.3 kHz in 0.35 s). Warmth arrives, and the music keeps opening across the following phrases. |
-| **0:27.1** | "…before the world did." | The break-boom lands right after *did*. The music then "holds its breath". |
-| **0:27.9** | **"You are one of them."** | The emotional moment. The orchestra falls away and, under the voice, a warm frozen chord swells (the same Gm that follows). It's intimate and personal, with no bombast. I lengthened the silence in the break bar by 0.35 s to let the line breathe. |
-| **0:30.3** | **ACT III — "This October…"** | The first drop of the track enters on *This*, still filtered (3.8 kHz) and at a modest level. The filter opens fully within a bar. Rhythmic "data" ticks on the 16th grid (8.5–14 kHz, above the sibilance range) grow quietly beneath "bold minds… a future waiting to be built". |
-| **0:38.9** | "To our partners: thank you…" | Deliberate pull-back into the breakdown, warmer (6.5 kHz). The gratitude gets room and sincerity. |
-| **0:44.6** | **ACT IV — "The future is calling."** | The final build starts on a bar line: the music rises 5 dB in a controlled way, a band-swept noise riser (300 Hz → 7.5 kHz) builds over two bars, and the ticks double from 8ths to 16ths. |
-| 0:46–0:50 | "October twenty-first. Wintercircus. Ghent." | The date and location are spaced slightly apart, with the rise continuing between them. |
-| **0:50.3** | "**Ghent.**" | The trailer's big boom lands on *Ghent*. |
-| 0:51–0:53 | Tension | The music sinks to near-silence (−50 dB). A single "signal" ping echoes through the empty space. **"Welcome…" sounds practically alone.** |
-| 0:53.0 | "…to" | The soundtrack's own swell plus a reverse swell rise up. |
-| **0:53.54** | **"TECTONIC."** | **Impact.** The final drop of the soundtrack (edited bar-accurately) lands 20 ms before the "T". Layered with it: a designed sub-drop (88→46 Hz, with upper harmonics so it carries on a JBL), a transient and an air tail. The voice gets a reverb throw. Then 2 s in which the climax simply breathes. |
-| **0:56.5** | "Together, we shape what's next." | The music ducks deeper (−9.5 dB) so the closing line stands clear. |
-| 0:59–1:05 | Climax | The last two bars of the full section (F – C), the musical highlight with no voice. |
-| **1:05–1:13** | Resolution | The track's natural ending on Gm. From it, a frozen version of that final chord blooms open and fades out. A last "signal" ping echoes away. |
+| 0:00 | The Signal | Two "signal" pings (D6 → G6 answer), frozen G-minor pad, the track's intro pulse fades in, heavily filtered. |
+| 0:02.9 | "Hey, you! Yes, you! Found the QR code? Nice!" | Intro bars 0–3 under the voice (low-pass 1.3 kHz). |
+| 0:10.5 | "Take it out. Turn it on." | The filter opens one step per command (2 kHz → 3.2 kHz → 5 kHz). |
+| **0:12.5** | **"Volume UP."** | Reverse swell + small sub hit; the track's **first drop (bar 9) lands exactly on "up"**, full-band and loud. |
+| 0:13.6 | | **Tape stop**: the drop winds down to nothing in 0.42 s… |
+| **0:14.1** | **"Warning."** | …and "Warning." stands in silence with a reverb throw. |
+| 0:14.7–19.6 | "…self-destruct in two minutes." | Countdown: dark frozen drone, clock ticks on every quarter note, heartbeat thumps; all rising slowly. |
+| **0:19.7** | (laugh) **"Just kidding."** | The pulse is back (bar 7) on "Just", with playful 8th-note ticks. |
+| 0:22.5 | "Look, we know you've put a lot of time, energy…" | Breakdown (bars 25–28) starts between "Look," and "we know"; bar hits land on "energy, \| and" and on "tecto**nic**". |
+| 0:28.7 | "And for that, a massive thank you. Seriously. We couldn't do this without you." | Warm frozen chord swells underneath. |
+| **0:34.0** | **"But October 21st?"** | Bar 29 lands on "But": the build starts. 8th-note ticks; bar hits on "Forget the **Power**Points" and "Bring your **peo**ple". |
+| 0:39.7 | "Bring your energy… something different. You've done the work." | Ticks double to 16ths, band-swept noise riser over two bars. |
+| **0:45.4** | "Now it's time to enjoy the **ride**." | **Boom** (bar 33) exactly on "ride"; the music then falls to near-silence (−49 dB); one signal ping. |
+| 0:47.4 | "Let's make some…" | Reverse swell rises into… |
+| **0:47.95** | **"…NOISE!"** | **Final drop** (bar 34) + designed sub impact, 20 ms before "noise". The page reveals the Tectonic logo here. |
+| 0:48–0:59 | Climax | Two bars of the drop, then the track's last climax bars (48–49). |
+| 0:59–1:07.6 | Resolution | The track's natural ending; frozen final chord, last signal ping. |
 
-## 4. How the reveal was built
+## 4. Measurements (I cannot listen in this environment — please check by ear)
 
-1. **The track's own structure as the backbone.** The soundtrack's sequence of *boom → silence → drop* (bars 33–34) was placed so that the boom lands on "Ghent" and the drop on "TECTONIC".
-2. **Elastic silence.** The gap between those two moments is fixed in the music (2.86 s) but needed 3.21 s in the voice-over. I lengthened the silence inside the break bar by 0.35 s via a 300 ms crossfade in a part that was already silent, so the grid, swell and drop all stay intact.
-3. **Gain automation on top.** After the boom the music drops a further 12 dB, so "Welcome…" stands in real near-silence (measured at −51 LUFS for the music).
-4. **Layers on the impact.** I placed a reverse swell that ends exactly on "TEC" and a designed sub-impact on top. The impact's air tail is high-passed above 4.5 kHz so the 300 Hz–4 kHz range stays free for the narrator.
-5. **Intelligibility check.** In the speech band (1–4 kHz) the voice sits **12.3 dB** above the music on "TECTONIC", despite the impact.
+- **Voice vs music in the speech band (1–4 kHz), per phrase:** median 17 dB. Tightest by design: "Volume up." 7.1 dB (on the drop) and "Probably." 8.1 dB. Everything else ≥ 10 dB.
+- **Music bed level (stem, RMS):** intro −26 dB, drop on "up" −14 dB, countdown −31 dB, breakdown −26 dB, build −24 dB, reveal silence −49 dB, final drop −14 dB.
+- **Limiter:** max 1.4 dB gain reduction, active (> 0.5 dB) for 0.26 s in total (only on the impacts).
+- Edits only on bar lines (34 ms equal-power crossfade) or inside silence (300 ms); see `production/timeline_v2.png`.
 
-## 5. Mixing and mastering
+Listen especially to: the tape stop before "Warning.", the level of the countdown clock, and whether the 1.5 s silence before "Let's make some noise!" feels right.
 
-- **Music edit:** 7 segments, cut only on bar lines (34 ms equal-power crossfade just before the hit) or inside silence (300 ms). Each join was checked for doubled transients, and none were found.
-- **Automation:** a time-varying low-pass filter (a bank of 10 zero-phase filters with interpolated cross-mix, so no phase smear), gain automation per act, sidechain ducking on the voice envelope (4–9.5 dB depending on the act), plus an extra dynamic −3 to −7 dB in the 0.9–4.2 kHz band while the narrator speaks.
-- **Measured voice-vs-music balance (speech band 1–4 kHz):** at least 6.7 dB everywhere. The tightest spot is "…to", on top of the swell just before the impact; elsewhere it is 8.6–21 dB.
-- **Master:** high-pass 31 Hz, −1.8 dB low shelf at 52 Hz (so a JBL doesn't pump; headphones keep their weight), gentle bus compression of 1.6:1, a 4× oversampled lookahead limiter (max 2.4 dB, only on the impact, 0.5 s in total), −14 LUFS.
-
-## 6. Limitations and honest notes
-
-- **I could not listen to the audio myself.** There's no audio playback in this production environment. All decisions were taken and checked by measurement: word-level timing (local speech recognition plus envelope analysis), beat/bar and chord analysis, spectrograms, loudness per phrase, speech-band SNR, transient detection at every edit, limiter activity, mono compatibility and true peak. **Please listen critically on both headphones and the JBL**, especially to:
-  - the level of the frozen pads (intro and "You are one of them")
-  - the "signal" pings
-  - whether the 2-second pause after "TECTONIC" feels right
-- **Inserted pauses:** the pacing of the voice-over is slower than the original ElevenLabs file (+8.1 s in pauses; the words themselves are unchanged). If you'd prefer to keep the original pauses, that's possible, but the sync with the music then partly falls away.
-- **Not used:** *The Mountain* and *Futuristic Digital Music*, because of key and tempo incompatibility (see §1).
-- **Sound effects:** all synthesized in code (pulse, pings, risers, sub-impact, ticks) or derived from the chosen, licensed soundtrack (frozen chords). No external samples, no paid services.
-- **Licence:** check that the Pixabay licence covers the intended use (a promotional gift for partners). Pixabay generally allows commercial use without attribution, but the source tracks may not be redistributed separately. That's why they're **not** included in this repository.
-
-## 7. Reproducing
-
-`production/produce.py` contains the complete, deterministic production (fixed random seed). Decode the voice-over to `vo.wav` and the chosen track to `stereo.wav` (44.1 kHz stereo, via ffmpeg) in a single folder, then run:
+## 5. Reproducing
 
 ```
-python3 produce.py <folder>
+python3 production/produce_v2.py production/work
 ```
+`production/work/` must contain `vo.wav` (the ElevenLabs file) and `stereo.wav` (the Pixabay track), 44.1 kHz.
+Dependencies: numpy, scipy, soundfile, pyloudnorm (MP3 encoding: lameenc). The script also writes
+`work/timeline_v2.json` with the page's captions, story moments and loudness envelope
+(copied to `landing/src/captions.json`, `landing/src/envelope.txt` and the `T` table in `landing/src/index.html`).
 
-Dependencies: numpy, scipy, soundfile, pyloudnorm. `analyze.py` reproduces the measurements. `asr.py` produced the word timing (sherpa-onnx, offline).
+**Licence:** check that the Pixabay Content License covers the intended use (a promotional gift for partners). The source track is not redistributed in this repository.

@@ -246,7 +246,7 @@
     <button class="play later" id="play" style="--d:1s" aria-label="Play The Signal">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.2-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5z"/></svg>
     </button>
-    <p class="hint later" style="--d:1.1s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>Sound on · 1 min 13 s</p>
+    <p class="hint later" style="--d:1.1s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5zM15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>Sound on · 1 min 7 s</p>
   </section>
 
   <section id="stage" aria-live="polite">
@@ -291,8 +291,8 @@
       <button class="mini" id="toggle" aria-label="Pause">
         <svg id="ico" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="position:relative"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg>
       </button>
-      <div class="track" id="track" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="73" aria-valuenow="0" tabindex="0"><i><b id="prog"></b></i></div>
-      <span class="time" id="time">0:00 / 1:13</span>
+      <div class="track" id="track" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="68" aria-valuenow="0" tabindex="0"><i><b id="prog"></b></i></div>
+      <span class="time" id="time">0:00 / 1:07</span>
     </div>
   </section>
 
@@ -306,9 +306,13 @@
 <script>
 (() => {
   "use strict";
-  const CAPS = [[4.5, 7.7, "Every great movement begins with a spark."], [8.29, 8.96, "An idea."], [9.62, 12.2, "A belief that tomorrow can be different from today."], [12.98, 15.16, "But ideas alone don’t change the world."], [15.69, 16.43, "People do."], [16.81, 18.43, "The dreamers. The builders."], [18.53, 21.72, "The ones who dare to turn the impossible into reality."], [22.24, 24.31, "And behind every great leap forward"], [24.6, 26.89, "are those who believed before the world did."], [27.94, 29.24, "You are one of them."], [30.43, 33.01, "This October, we bring those minds together."], [33.3, 36.24, "One place. One generation of bold minds"], [36.57, 38.33, "and a future waiting to be built."], [39.0, 39.85, "To our partners:"], [40.44, 41.57, "Thank you for believing."], [42.19, 43.4, "Thank you for building."], [44.72, 46.15, "The future is calling."], [46.98, 48.15, "October twenty-first."], [48.88, 49.72, "Wintercircus."], [50.34, 50.77, "Ghent."], [52.02, 52.57, "Welcome…"], [53.37, 54.29, "to TECTONIC."], [56.51, 58.7, "Together, we shape what’s next."]];
-  const ENV = "0000000000000023002456336875443a89b9aabbbdvusqomjigghigcdhkjhhgputrqonkihlmjijjihgehiwvutqpmlmonjjlkkiiimlwxwvusqonolihmnojhjmlpAzxwurpoomlvNPLAzDJKKDBAJFNLGApqqFMLGDAwwBAEEAzBCurroljlkijkhjljEEDGFAGDLLIIJFvBBzyFILKKAvCHFIIDCBxtBDAyrAzyABBBAxCDEDDyBHPNLMMMBxGNJIHDAAwyxvvtwwyAxxwyyxwxuuwwBNNKLPOMOOLJBzAyMKvtFGNQONMKLLNKJHIHBzzJOJFNIBwEPLBxxzEFCwvzDGHBFEHEHKJIHAyzvqpponnmmopnpomnloopAEFFzIOGKKKKKIOPPONHJOLNOMJMLMKHGGFzKLLOHwvyLCLKMLJFExxJHBDJIIHCAyxuuzrqqsrtuvwuwuwywxFOMONMGCKPMIBEIMJHEAzDzADDBEACGHFEIOLHEMNOQOMNNMKGABBzDHDywzzBDMOKBxARPPPNMKBIJDCyDGGCCFEEEACQPINMMLONJGNQIFAzKOPLLMMIAHOGyICONMMMJMMLLNFtuzyBPLFDHKJDCIKLCzMOKEGNJINMMJHIHFJHFGFIIGEBACGCyHEIECGFFEGIOPKMJKLNKLNHDBzLNOIGGMPMGFEAHMNLNNDCBINNNIzyBBABLONLLHIKHFEEEDGFHCDCFFJLMIJQPOPPJGGEOODENNNMLONLJGFGCByExvKNExAINNLHELKECLMIHFEAutwzEDAxrxrrqrrryKKGGIHEBACwCBADAwzzAuxwvtEIMPPQPNLIGFDyorHKKLGDDIKLIFAytwpAAzwvqnpqoposroqsvwuruywxuxBBzADHGHJIJMKIHJPQKGKMLzwtIKMOOMEHLLHDxuwzzAAzMPPJCyIONNNONMMNOMEDIOMJIGILLEHxDIJCFMJGyyDAxyxwwxBDEDEHOONMMNFzAHJHCBxzDEECuvxyzAyKNMNOMMNJDMOLLLMNMNLLKHFGAGIHHCyAzyKMONKKKFAENLJHEDBACDECEIHxxyCBABBEFGMOMLDBzHHNOLyxHHFEEzzyCFNNOJCGEFEECFGFFKLDAzLJFCzyBADAyzBEEDFEFHEFFIJJLHLOSPOMMDBBJMMKIwvDAzDBDGDyBABBzyByBDDByBACGFDGJMKOMBBAJMFAAFJEFLKILJHFxzCzBxwswwwyCEDEFCDACBABABDFIOKMPLxAxFJHyvzJLHCvJPOMHGzAAyuwrqrpqsrrrprstwxxwvwxxvvsrtutstsssstvsGKLLKPNLECIMNPIwCHLPPQMGyyLOJMAzFIHLNNKIFAAzzyxyxAyvAzzBAzCEDFGGDEEEEEEFJOKFDJLPOQFMLzIIONNINJCEHONJEBCGFEFCDCBBDDEFEDHHIHGIGHGIHIORQPKHMIGHFNNLHyxyzxADDBxuwyxyyyxxvwxvwwvANNMNPNJIAzuzEzAzswxxtvvusvpssusrulmlkhdfjdecbdb9668yMQOOOMAwEHJzwtnj610101232448dejimpsrswBCKOPIKRPQQQLLOMOQMPRQPMIJIHJIKKKLLHLLMOMMILMKOMJLMKNMLLLNLLPMMMJLMMNMLOLJLMNMMNMNOOOLMMJKJLOONNOQOOLMJKIBFBDCDywzByyCJQQOOJJIIJJOLIEzzyzzAJLNHzCIILOLHEAzzAFEFEABxxzACBCEDEEDGGFKMONLLPMMPMLMNOLQQLMNLLNMOLOOOONQMNMNLLNNMLMLLMLMLMLMMJJMNLLPOMMNPPOLJKMMLMMNOMNNLNMLJPQPPOOMKLLONLNKNPNNONLKMLKLONNLLPONMLKLLLMKKNMNMMLLNNMNMNLKMKKMLONNLLMOLMLMNNMMMMOLLMNOPQNMOQLNJMKNJJKPOLGJNIKMLNLIKNNNKIHKHILJIFKIKMLIKIIJGJJHIGJGILHJIIGFFGFHJIKMLMLMMLJJJGEDBzyyxxwuurssuwvsonnmkklmmnnpqrommoqmminqplknomlmllnmjmonnighlkijlmmkhjjjfeejihefiljedfhfeddedbabab997988755420244200000000000000000000000000000000000000000000", ENV_FPS = 30;
-  const T = { spark: 7.12, people: 15.69, brk: 27.12, drop: 30.33, ghent: 50.33, quiet: 51.5, tec: 53.54, end: 64.97 };
+  const CAPS = [[2.95, 3.87, "Hey, you!"], [4.13, 5.11, "Yes, you!"], [5.47, 6.43, "Found the QR code?"], [6.71, 7.39, "Nice!"], [7.73, 10.16, "Now, see that JBL speaker in your box?"], [10.5, 10.95, "Take it out."], [11.3, 11.78, "Turn it on."], [12.13, 12.8, "Volume up."], [14.12, 14.66, "Warning."], [14.95, 17.81, "Your gift box will self-destruct in two minutes."], [19.68, 20.48, "Just kidding."], [20.97, 21.69, "Probably."], [22.12, 25.38, "Look, we know you’ve put a lot of time, energy,"], [25.65, 28.35, "and let’s be real, money into Tectonic."], [28.69, 30.95, "And for that, a massive thank you."], [31.21, 31.94, "Seriously."], [32.22, 33.63, "We couldn’t do this without you."], [33.98, 35.23, "But October 21st?"], [35.48, 36.33, "Forget the meetings."], [36.59, 37.94, "Forget the PowerPoints."], [38.2, 38.98, "Bring your energy."], [39.34, 40.19, "Bring your people."], [40.4, 42.18, "And get ready for something different."], [42.75, 43.66, "You’ve done the work."], [43.9, 45.91, "Now it’s time to enjoy the ride."], [47.37, 48.77, "Let’s make some noise!"]];
+  const ENV = "00rtpmheb9dedfhgglpqptwxuwzEDFHDKLPLJGNNJMHKILHEMKMHCKKGJLJIJHLLMLKGIHGGJIEDIEJKHIGDHKFIJEDBNKPLOOMJFCCFKMNLJMPNHEACCAEFHFFIGJMQKIIDEEFEFDCBEEGHLPPNMKNGCyBzxxABzywBCBLJKEHLGzFKNOMOMKMxyKNJMNBxCqrrqsqspuuNNNOIKJHLMIGBEHFHIFGBCEFFEGFGMMJGFDDAEDEGIHIJLDPLJHFBFKKOKMMHCIJJNJKKKHGGDyENGABJKKJEEKMJEOOLIHDAIHGDCAxxBBCCDBGKMNKzLNKNKHCzxBzzABBBCBBLEOOLMPHMLKFCAxxyxzzzyzzzFDHLMNNNMMNKRQQNIINPPJLORMMRRROMPMLKNOMOQSTTPQMLJJFCEwwtfd6KNOMKJJCDyvtuppsrnlkmqpqmEMNHupFOMzrwAoGPOMGEzJGtxJHEGGGGJOMCqryKMJIFzGNMJDtpGEyxIHIEAILHAFMIFIHGEyyuqnmBGFEECrrqmouttqorsqlwIHFDBzyyvrtqopkpoqoqsvvNDzywusQHptzDEBttnoGOOLLPMGEHEzDFLKCJIGCFBAzACBEFBCHGGGHGGFDEHCyxwwvxwyyxwwwwwttssvwxxvwwyBHNMMExroxxuqnDILHGIKLKLMOQQLMNJJKGGFBDKOIMLJGIFHIHFKLNKBADJGIKLLKIJJIFGFECCDCACELLJMNNGHHILLLKKGEAAEGFHFIIKKDIMGIGGGKIGJCAIIHFGMONMMKKIHzuxzzyDIJLJLMLHBCAvvwrtswGJKDDKFwEJIEppCFIHEtwywwEGHGCHKEMCIEOOJHDEFMNICKKKJLLKDDCDDBFFGMOMJGHKHIKKIIHHFFFDLKEBCAzLJEDAzzyEDDABAyxyAzBGHJKNKKKKKNMIGDGFCCDCBAAzAzwzzBAAPNByDIAPIFLJCwHHGHCINKJHAHGHLLMKDxAEEzwwvuuutvvuvutvKPNOLGFEIHOPKENIFGJOJLMDBCMNOKIHKJHEEBBACDEAFFHNOOFMOPCBCNIHHKKJEFDCABADGGDzBBAFKOIEEOPPHDGQHFAEHMMNONMIEEHKKIFBBzEGFFBCCBCDCADKQRPNLMNONGwBLMMMNOMFIGHJDywxuusqsKQOMHGMOFutGJQQRHHKNNFFCIFBHHJIGOLNIHNQPKGFGMPOLKHIGEBHIJLKJIHLHHBDKKMHGILLHDCGIGDEBBEEFHGIHHGJIHLONPMRLRRKJGJPPNIIOLJHOOOLHDFFFCGHIHGIHKLLNJKLLJIGFBBGKzGHEBJEFKJJJHDHHKMMLMGKHMNMKIAKNNLOMMJCDBAAyzAzvxzyxwxwtwrutvuvtpmgifaaab9969ca864766775BKPRIEHCxOQQHIECLPDHPTVVTRPSSSRNMNOPNLKLIKILKKMOKLNPPPOKLONQOMMONPONONPONQPOOMMNNQPLQONNNPOONOOQRQPPONOMPTSTSPQPNOMMMPONLPORQNOROMLLNOOQPORQNPOMNNOPPOPOMPPPNNMQNMNKOPPPQQPPPNNMMNPQNOQNONLLNLORRTQPRQNTOPNQQPQTPNQNNPPPOOQQQQQQPOOOOOQPNNPMPNONOONPLLNOOORPPPPQRRNLMNNPONPQPOOPPONLRSRSNRPMNNQPPNPOQROQQNMNOMMPPQONOSQPONNNNNNMPOPONPMPPPOOQOLONMNOPQPNNOQONOOPPPPNPOOOOORRSQORRQOMPMOOHMRPPJHQLLNPOQKMPOROLJLLKLNMHKLJONIMKJNJLMJKIKLJNLLJLHIGGIJKMNNNPMPONNMLJIFDyyywxvwvsrtuvsoooqnkmnrqokortqljkopllqrqolmpnlllmmnnmnponhjmnliimmljiijggeihhebcggfaaddeccdffdddc9abab7323443243220000000000000000000000000000000000000000000", ENV_FPS = 30;
+  // story moments (s) — from TECTONIC_THE_SIGNAL_OUTPUT/production/produce_v2.py
+  const T = { spark: 1.12, up: 12.54, warn: 14.12, kid: 19.69, look: 22.55, but: 33.98, ride: 45.4, quiet: 46.4, tec: 47.95, end: 59.38 };
+  const DUR = 67.6;
+  // glow level per stretch of the story: [from, to, opacity]
+  const GLOW = [[T.up, T.warn, 0.85], [T.warn, T.kid, 0.04], [T.kid, T.look, 0.4], [T.look, T.but, 0.55], [T.but, T.quiet, 0.8], [T.tec, Infinity, 1]];
   const CH = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const env = Float32Array.from(ENV, c => CH.indexOf(c) / 61);
   const $ = id => document.getElementById(id);
@@ -357,7 +361,7 @@
   const track = $("track");
   const seekTo = e => {
     const r = track.getBoundingClientRect(), x = (e.touches ? e.touches[0].clientX : e.clientX);
-    const d = audio.duration || 73.17; audio.currentTime = Math.min(Math.max((x - r.left) / r.width, 0), 1) * d;
+    const d = audio.duration || DUR; audio.currentTime = Math.min(Math.max((x - r.left) / r.width, 0), 1) * d;
     if (body.classList.contains("ended")) { body.classList.remove("ended"); audio.play(); }
   };
   let drag = false;
@@ -375,8 +379,8 @@
     if (el) { const old = el; old.classList.remove("on"); setTimeout(() => old.remove(), 500); el = null; }
     if (i < 0) return;
     el = document.createElement("span"); el.textContent = CAPS[i][2];
-    if (/You are one of them/.test(CAPS[i][2])) el.className = "you";
-    if (/TECTONIC/.test(CAPS[i][2])) el.className = "tec";
+    if (/without you/.test(CAPS[i][2])) el.className = "you";
+    if (/make some noise/i.test(CAPS[i][2])) el.className = "tec";
     cap.appendChild(el); requestAnimationFrame(() => requestAnimationFrame(() => el && el.classList.add("on")));
   }
   function capAt(t) {
@@ -430,15 +434,18 @@
 
     if (body.classList.contains("playing") || body.classList.contains("ended")) {
       // progress
-      const d = audio.duration || 73.17; $("prog").style.width = (t / d * 100) + "%";
+      const d = audio.duration || DUR; $("prog").style.width = (t / d * 100) + "%";
       if (now - lastT > 250) { $("time").textContent = fmt(t) + " / " + fmt(d); track.setAttribute("aria-valuenow", Math.round(t)); lastT = now; }
       if (!body.classList.contains("ended")) setCap(capAt(t));
       // story moments
       moment("spark", t, () => { sparkAt = now; flash(.08, 500); });
-      $("warm").style.opacity = t >= T.people && t < T.brk ? 0.55 : t >= T.drop && t < T.quiet ? 0.8 : t >= T.tec ? 1 : 0.12;
-      moment("ghent", t, () => { shake(); flash(.06, 400); });
+      const g = GLOW.find(([a, b]) => t >= a && t < b); $("warm").style.opacity = g ? g[2] : 0.12;
+      moment("up", t, () => { sparkAt = now; shake(); flash(.14, 600); });           // "Volume UP" — first drop
+      moment("warn", t, () => { shake(); flash(.05, 300); });                         // "Warning." — tape stop
+      moment("kid", t, () => { sparkAt = now; flash(.06, 400); });                    // "Just kidding." — music is back
+      moment("ride", t, () => { shake(); flash(.06, 400); });                         // boom on "enjoy the ride"
       moment("tec", t, () => { body.classList.add("rev"); shake(); flash(.35, 900); if (navigator.vibrate) try { navigator.vibrate([60, 40, 120]); } catch (e) {} });
-      if (t < T.tec - 0.2 && !body.classList.contains("ended")) body.classList.remove("rev");
+      body.classList.toggle("rev", t >= T.tec || body.classList.contains("ended"));   // state-based, so seeking can never lose the reveal
     }
     requestAnimationFrame(draw);
   }
